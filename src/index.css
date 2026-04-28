@@ -13,11 +13,10 @@
     background-color: #f5f0e8;
     color: #0d0d0d;
     font-family: 'DM Mono', monospace;
-    min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
   }
 
-  /* Grain overlay */
   body::before {
     content: '';
     position: fixed;
@@ -30,7 +29,98 @@
 }
 
 @layer components {
-  /* Range input — can't be done cleanly with Tailwind utilities */
+  /* ─── Layout ─── */
+  .main-layout {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Controls panel */
+  .controls-panel {
+    border-right: 1.5px solid #ccc5b5;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: #f5f0e8;
+    width: 360px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  /* Preview panel */
+  .preview-panel {
+    background: #ede8de;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Mobile tab switcher — hidden on desktop */
+  .mobile-tab-switcher {
+    display: none;
+    gap: 6px;
+  }
+
+  .desktop-subtitle {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 300;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 640px) {
+    .mobile-tab-switcher {
+      display: flex;
+    }
+
+    .desktop-subtitle {
+      display: none;
+    }
+
+    .main-layout {
+      position: relative;
+    }
+
+    /* Both panels fill the screen; visibility toggled by class */
+    .controls-panel,
+    .preview-panel {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-right: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .controls-panel {
+      padding: 20px 16px;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .mobile-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+      z-index: 2;
+    }
+
+    .mobile-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(8px);
+      z-index: 1;
+    }
+  }
+
+  /* ─── Range input ─── */
   input[type='range'] {
     -webkit-appearance: none;
     appearance: none;
@@ -82,12 +172,10 @@
     border: none;
   }
 
-  /* Textarea placeholder */
   textarea::placeholder {
     color: #bbb;
   }
 
-  /* Section label rule line */
   .section-label::after {
     content: '';
     flex: 1;
@@ -95,7 +183,6 @@
     background: #ccc5b5;
   }
 
-  /* Fade-up animation for controls */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }

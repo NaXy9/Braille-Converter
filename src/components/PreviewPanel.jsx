@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect, useMemo } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { wrapText, buildSVG } from '../braille'
 
-export default function PreviewPanel({ settings }) {
+export default function PreviewPanel({ settings, mobileTab }) {
   const [zoom, setZoom] = useState(1)
   const containerRef = useRef(null)
 
@@ -34,20 +34,13 @@ export default function PreviewPanel({ settings }) {
 
   return (
     <section
-      style={{
-        background: '#ede8de',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        flex: 1,
-        minWidth: 0,
-      }}
+      className={`preview-panel ${mobileTab === 'preview' ? 'mobile-visible' : 'mobile-hidden'}`}
     >
       {/* Toolbar */}
       <div
         style={{
           borderBottom: '1.5px solid #ccc5b5',
-          padding: '12px 24px',
+          padding: '10px 20px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -55,9 +48,10 @@ export default function PreviewPanel({ settings }) {
           fontSize: 11,
           color: '#888',
           fontFamily: '"DM Mono", monospace',
+          flexShrink: 0,
         }}
       >
-        <span>Preview — adjust settings and type text</span>
+        <span>Preview</span>
         <span>{Math.round(zoom * 100)}%</span>
       </div>
 
@@ -68,7 +62,7 @@ export default function PreviewPanel({ settings }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '48px 40px',
+          padding: '32px 20px',
           overflow: 'auto',
           position: 'relative',
         }}
@@ -78,7 +72,7 @@ export default function PreviewPanel({ settings }) {
             <div
               style={{
                 fontFamily: '"Unbounded", sans-serif',
-                fontSize: 48,
+                fontSize: 40,
                 fontWeight: 200,
                 color: '#e0dbd0',
                 marginBottom: 12,
@@ -87,7 +81,7 @@ export default function PreviewPanel({ settings }) {
             >
               ⠃⠗⠁⠊⠇
             </div>
-            <p style={{ fontSize: 12, letterSpacing: '0.08em' }}>Type text to begin rendering</p>
+            <p style={{ fontSize: 11, letterSpacing: '0.08em' }}>Type text to begin rendering</p>
           </div>
         ) : (
           <div
@@ -108,8 +102,8 @@ export default function PreviewPanel({ settings }) {
       <div
         style={{
           position: 'absolute',
-          bottom: 48,
-          right: 24,
+          bottom: 52,
+          right: 16,
           display: 'flex',
           border: '1.5px solid #ccc5b5',
           background: '#f5f0e8',
@@ -124,13 +118,13 @@ export default function PreviewPanel({ settings }) {
             key={label}
             onClick={action}
             style={{
-              width: label === '1:1' ? 40 : 32,
-              height: 32,
+              width: label === '1:1' ? 44 : 36,
+              height: 36,
               background: 'none',
               border: 'none',
               borderLeft: label === '−' ? 'none' : '1.5px solid #ccc5b5',
               cursor: 'pointer',
-              fontSize: label === '1:1' ? 11 : 16,
+              fontSize: label === '1:1' ? 11 : 18,
               letterSpacing: label === '1:1' ? '0.05em' : 0,
               color: '#0d0d0d',
               fontFamily: '"DM Mono", monospace',
@@ -151,14 +145,16 @@ export default function PreviewPanel({ settings }) {
       <div
         style={{
           borderTop: '1.5px solid #ccc5b5',
-          padding: '8px 24px',
+          padding: '8px 16px',
           display: 'flex',
-          gap: 24,
+          gap: 16,
+          flexWrap: 'wrap',
           fontSize: 10,
           color: '#999',
           background: '#f5f0e8',
           letterSpacing: '0.08em',
           fontFamily: '"DM Mono", monospace',
+          flexShrink: 0,
         }}
       >
         {[

@@ -22,7 +22,7 @@ function CopyIcon() {
   )
 }
 
-export default function ControlsPanel({ settings, set, onExport, onCopy }) {
+export default function ControlsPanel({ settings, set, onExport, onCopy, mobileTab }) {
   const [copyLabel, setCopyLabel] = useState(null)
 
   const handleCopy = async () => {
@@ -33,12 +33,12 @@ export default function ControlsPanel({ settings, set, onExport, onCopy }) {
 
   const btnBase = {
     width: '100%',
-    padding: '14px',
+    padding: '13px',
     border: 'none',
     fontFamily: '"Unbounded", sans-serif',
     fontSize: '11px',
     fontWeight: 700,
-    letterSpacing: '0.15em',
+    letterSpacing: '0.12em',
     textTransform: 'uppercase',
     cursor: 'pointer',
     transition: 'all 0.18s',
@@ -50,18 +50,7 @@ export default function ControlsPanel({ settings, set, onExport, onCopy }) {
 
   return (
     <aside
-      className="fade-up"
-      style={{
-        borderRight: '1.5px solid #ccc5b5',
-        padding: '32px 28px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '28px',
-        background: '#f5f0e8',
-        width: 380,
-        flexShrink: 0,
-        overflowY: 'auto',
-      }}
+      className={`controls-panel fade-up ${mobileTab === 'controls' ? 'mobile-visible' : 'mobile-hidden'}`}
     >
       {/* INPUT */}
       <div>
@@ -73,11 +62,11 @@ export default function ControlsPanel({ settings, set, onExport, onCopy }) {
           spellCheck={false}
           style={{
             width: '100%',
-            height: 110,
+            height: 100,
             background: '#ede8de',
             border: '1.5px solid #ccc5b5',
             borderRadius: 0,
-            padding: 14,
+            padding: 12,
             fontFamily: '"DM Mono", monospace',
             fontSize: 14,
             color: '#0d0d0d',
