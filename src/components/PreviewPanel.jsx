@@ -1,7 +1,7 @@
 import { useRef, useState, useMemo } from 'react'
 import { wrapText, buildSVG } from '../braille'
 
-export default function PreviewPanel({ settings, mobileTab }) {
+export default function PreviewPanel({ settings, mobileTab, t }) {
   const [zoom, setZoom] = useState(1)
   const containerRef = useRef(null)
 
@@ -29,13 +29,10 @@ export default function PreviewPanel({ settings, mobileTab }) {
 
   const adjustZoom = (delta) => setZoom((z) => Math.min(4, Math.max(0.3, +(z + delta).toFixed(1))))
   const resetZoom  = () => setZoom(1)
-
   const isEmpty = !settings.text.trim()
 
   return (
-    <section
-      className={`preview-panel ${mobileTab === 'preview' ? 'mobile-visible' : 'mobile-hidden'}`}
-    >
+    <section className={`preview-panel ${mobileTab === 'preview' ? 'mobile-visible' : 'mobile-hidden'}`}>
       {/* Toolbar */}
       <div
         style={{
@@ -51,7 +48,7 @@ export default function PreviewPanel({ settings, mobileTab }) {
           flexShrink: 0,
         }}
       >
-        <span>Preview</span>
+        <span>{t.previewHint}</span>
         <span>{Math.round(zoom * 100)}%</span>
       </div>
 
@@ -81,7 +78,7 @@ export default function PreviewPanel({ settings, mobileTab }) {
             >
               ⠃⠗⠁⠊⠇
             </div>
-            <p style={{ fontSize: 11, letterSpacing: '0.08em' }}>Type text to begin rendering</p>
+            <p style={{ fontSize: 11, letterSpacing: '0.08em' }}>{t.emptyHint}</p>
           </div>
         ) : (
           <div
@@ -158,10 +155,10 @@ export default function PreviewPanel({ settings, mobileTab }) {
         }}
       >
         {[
-          ['Chars', charCount],
-          ['Cells', cellCount],
-          ['Lines', totalLines],
-          ['Size', isEmpty ? '—' : `${svgW}×${svgH}px`],
+          [t.chars, charCount],
+          [t.cells, cellCount],
+          [t.lines, totalLines],
+          [t.size, isEmpty ? '—' : `${svgW}×${svgH}px`],
         ].map(([label, val]) => (
           <span key={label}>
             {label}: <b style={{ color: '#0d0d0d', fontWeight: 500 }}>{val}</b>

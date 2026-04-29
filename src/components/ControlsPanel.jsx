@@ -22,12 +22,12 @@ function CopyIcon() {
   )
 }
 
-export default function ControlsPanel({ settings, set, onExport, onCopy, mobileTab }) {
+export default function ControlsPanel({ settings, set, onExport, onCopy, mobileTab, t }) {
   const [copyLabel, setCopyLabel] = useState(null)
 
   const handleCopy = async () => {
     await onCopy()
-    setCopyLabel('✓ Copied!')
+    setCopyLabel(t.copied)
     setTimeout(() => setCopyLabel(null), 2000)
   }
 
@@ -49,16 +49,14 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
   }
 
   return (
-    <aside
-      className={`controls-panel fade-up ${mobileTab === 'controls' ? 'mobile-visible' : 'mobile-hidden'}`}
-    >
+    <aside className={`controls-panel fade-up ${mobileTab === 'controls' ? 'mobile-visible' : 'mobile-hidden'}`}>
       {/* INPUT */}
       <div>
-        <SectionLabel>Input</SectionLabel>
+        <SectionLabel>{t.sectionInput}</SectionLabel>
         <textarea
           value={settings.text}
           onChange={(e) => set('text', e.target.value)}
-          placeholder="Type text here... / Введите текст..."
+          placeholder={t.placeholder}
           spellCheck={false}
           style={{
             width: '100%',
@@ -82,26 +80,26 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
 
       {/* TYPOGRAPHY */}
       <div>
-        <SectionLabel>Typography</SectionLabel>
-        <SliderRow label="Dot Radius"   value={settings.dotRadius}   min={2}  max={10} step={0.5} unit="px" onChange={(v) => set('dotRadius', v)} />
-        <SliderRow label="Cell Width"   value={settings.cellW}       min={16} max={60} step={1}   unit="px" onChange={(v) => set('cellW', v)} />
-        <SliderRow label="Cell Height"  value={settings.cellH}       min={24} max={80} step={1}   unit="px" onChange={(v) => set('cellH', v)} />
-        <SliderRow label="Line Spacing" value={settings.lineSpacing}  min={4}  max={48} step={1}   unit="px" onChange={(v) => set('lineSpacing', v)} />
-        <SliderRow label="Margin"       value={settings.margin}      min={8}  max={80} step={2}   unit="px" onChange={(v) => set('margin', v)} />
+        <SectionLabel>{t.sectionTypography}</SectionLabel>
+        <SliderRow label={t.dotRadius}    value={settings.dotRadius}   min={2}  max={10} step={0.5} unit="px" onChange={(v) => set('dotRadius', v)} />
+        <SliderRow label={t.cellWidth}    value={settings.cellW}       min={16} max={60} step={1}   unit="px" onChange={(v) => set('cellW', v)} />
+        <SliderRow label={t.cellHeight}   value={settings.cellH}       min={24} max={80} step={1}   unit="px" onChange={(v) => set('cellH', v)} />
+        <SliderRow label={t.lineSpacing}  value={settings.lineSpacing}  min={4}  max={48} step={1}   unit="px" onChange={(v) => set('lineSpacing', v)} />
+        <SliderRow label={t.margin}       value={settings.margin}      min={8}  max={80} step={2}   unit="px" onChange={(v) => set('margin', v)} />
       </div>
 
       {/* COLOURS */}
       <div>
-        <SectionLabel>Colours</SectionLabel>
+        <SectionLabel>{t.sectionColours}</SectionLabel>
         <div className="flex gap-2.5 items-center">
-          <ColorSwatch label="Dot fill"  value={settings.colorDot}   onChange={(v) => set('colorDot', v)} />
-          <ColorSwatch label="Empty dot" value={settings.colorEmpty} onChange={(v) => set('colorEmpty', v)} />
+          <ColorSwatch label={t.colorDot}   value={settings.colorDot}   onChange={(v) => set('colorDot', v)} />
+          <ColorSwatch label={t.colorEmpty} value={settings.colorEmpty} onChange={(v) => set('colorEmpty', v)} />
         </div>
       </div>
 
       {/* OPTIONS */}
       <div>
-        <SectionLabel>Options</SectionLabel>
+        <SectionLabel>{t.sectionOptions}</SectionLabel>
 
         <div style={{ marginBottom: 12 }}>
           <select
@@ -121,13 +119,13 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
               appearance: 'none',
             }}
           >
-            <option value="wrap">Wrap to width</option>
-            <option value="single">Single line</option>
+            <option value="wrap">{t.wrapToWidth}</option>
+            <option value="single">{t.singleLine}</option>
           </select>
         </div>
 
         <SliderRow
-          label="Max width (cells)"
+          label={t.maxWidth}
           value={settings.maxCols}
           min={5} max={60} step={1} unit=""
           onChange={(v) => set('maxCols', v)}
@@ -140,7 +138,7 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
             onChange={(e) => set('showEmpty', e.target.checked)}
             style={{ width: 16, height: 16, accentColor: '#0d0d0d', cursor: 'pointer' }}
           />
-          Show empty dots
+          {t.showEmptyDots}
         </label>
 
         <label style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, cursor: 'pointer', userSelect: 'none', marginTop: 8 }}>
@@ -150,13 +148,13 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
             onChange={(e) => set('showGuide', e.target.checked)}
             style={{ width: 16, height: 16, accentColor: '#0d0d0d', cursor: 'pointer' }}
           />
-          Show cell guides
+          {t.showCellGuides}
         </label>
       </div>
 
       {/* EXPORT */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <SectionLabel>Export</SectionLabel>
+        <SectionLabel>{t.sectionExport}</SectionLabel>
 
         <button
           onClick={onExport}
@@ -165,7 +163,7 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
           onMouseLeave={(e) => { e.currentTarget.style.background = '#0d0d0d'; e.currentTarget.style.transform = 'translateY(0)' }}
           onMouseDown={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
         >
-          <DownloadIcon /> Download SVG
+          <DownloadIcon /> {t.downloadSVG}
         </button>
 
         <button
@@ -174,7 +172,7 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
           onMouseEnter={(e) => { e.currentTarget.style.background = '#ede8de'; e.currentTarget.style.transform = 'translateY(-1px)' }}
           onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; e.currentTarget.style.transform = 'translateY(0)' }}
         >
-          <CopyIcon /> {copyLabel ?? 'Copy SVG code'}
+          <CopyIcon /> {copyLabel ?? t.copySVG}
         </button>
       </div>
     </aside>
