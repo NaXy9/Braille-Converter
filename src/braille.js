@@ -111,6 +111,7 @@ export function buildSVG({
   colorEmpty,
   showEmpty,
   showGuide,
+  dotStroke = null, // optional: { color, width } — preview-only, not in exported SVG
 }) {
   const dotColGap = cellW / 2
   const dotRowGap = cellH / 3
@@ -142,7 +143,7 @@ export function buildSVG({
         const active = (bits >> d) & 1
 
         if (active) {
-          dots += `<circle cx="${cx}" cy="${cy}" r="${dotRadius}" fill="${colorDot}"/>`
+          const strokeAttrs = dotStroke ? ` stroke="${dotStroke.color}" stroke-width="${dotStroke.width}"` : ""; dots += `<circle cx="${cx}" cy="${cy}" r="${dotRadius}" fill="${colorDot}"${strokeAttrs}/>`;
           cellCount++
         } else if (showEmpty) {
           dots += `<circle cx="${cx}" cy="${cy}" r="${(dotRadius * 0.55).toFixed(2)}" fill="${colorEmpty}"/>`
