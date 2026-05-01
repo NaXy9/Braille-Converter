@@ -19,16 +19,17 @@ export const EN_BRAILLE = {
   "'": 0b000100, '"': 0b000100, '/': 0b100100,
 }
 
-// Russian Braille (unified Russian standard)
+// Russian Braille — verified against symbl.cc/ru/tools/braille/
+// Исправлены: и (dots 2,4), г (dots 1,2,4,5), х (dots 1,2,5), я (dots 1,2,4,6)
 export const RU_BRAILLE = {
-  а: 0b000001, б: 0b000011, в: 0b111010, г: 0b001011,
+  а: 0b000001, б: 0b000011, в: 0b111010, г: 0b011011,
   д: 0b011001, е: 0b010001, ж: 0b011011, з: 0b110101,
-  и: 0b011010, й: 0b111011, к: 0b000101, л: 0b000111,
+  и: 0b001010, й: 0b111011, к: 0b000101, л: 0b000111,
   м: 0b001101, н: 0b011101, о: 0b010101, п: 0b001111,
   р: 0b010111, с: 0b001110, т: 0b011110, у: 0b111010,
-  ф: 0b001011, х: 0b101101, ц: 0b001001, ч: 0b111101,
+  ф: 0b001011, х: 0b010011, ц: 0b001001, ч: 0b111101,
   ш: 0b110001, щ: 0b110011, ъ: 0b011100, ы: 0b101110,
-  ь: 0b001100, э: 0b100110, ю: 0b110110, я: 0b000001,
+  ь: 0b001100, э: 0b100110, ю: 0b110110, я: 0b101011,
   ё: 0b011111,
   ' ': 0b000000, '.': 0b110010, ',': 0b000010, '!': 0b010110,
   '?': 0b100110, '-': 0b100000,
@@ -113,8 +114,8 @@ export function buildSVG({
   showGuide,
   dotStroke = null, // optional: { color, width } — preview-only, not in exported SVG
 }) {
-  const dotColGap = cellW / 2
-  const dotRowGap = cellH / 3
+  const dotColGap = cellW * 0.4
+  const dotRowGap = cellH * 0.25
   const lineHeight = cellH + lineSpacing
   const totalLines = lines.length
   const maxLineLen = Math.max(...lines.map((l) => l.length), 1)
