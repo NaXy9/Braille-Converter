@@ -19,18 +19,42 @@ export const EN_BRAILLE = {
   "'": 0b000100, '"': 0b000100, '/': 0b100100,
 }
 
-// Russian Braille — verified against symbl.cc/ru/tools/braille/
-// Исправлены: и (dots 2,4), г (dots 1,2,4,5), х (dots 1,2,5), я (dots 1,2,4,6)
+// Russian Braille — все символы проверены посимвольно по symbl.cc/ru/tools/braille/
+// используя pangram "Съешь ещё этих мягких французских булок, да выпей же чаю"
 export const RU_BRAILLE = {
-  а: 0b000001, б: 0b000011, в: 0b111010, г: 0b011011,
-  д: 0b011001, е: 0b010001, ж: 0b011011, з: 0b110101,
-  и: 0b001010, й: 0b111011, к: 0b000101, л: 0b000111,
-  м: 0b001101, н: 0b011101, о: 0b010101, п: 0b001111,
-  р: 0b010111, с: 0b001110, т: 0b011110, у: 0b111010,
-  ф: 0b001011, х: 0b010011, ц: 0b001001, ч: 0b111101,
-  ш: 0b110001, щ: 0b110011, ъ: 0b011100, ы: 0b101110,
-  ь: 0b001100, э: 0b100110, ю: 0b110110, я: 0b101011,
-  ё: 0b011111,
+  а: 0b000001, // dots [1]           ⠁
+  б: 0b000011, // dots [1,2]         ⠃
+  в: 0b111010, // dots [2,4,5,6]     ⠺
+  г: 0b011011, // dots [1,2,4,5]     ⠛
+  д: 0b011001, // dots [1,4,5]       ⠙
+  е: 0b010001, // dots [1,5]         ⠑
+  ж: 0b011010, // dots [2,4,5]       ⠚
+  з: 0b110101, // dots [1,3,5,6]     ⠵
+  и: 0b001010, // dots [2,4]         ⠊
+  й: 0b101111, // dots [1,2,3,4,6]   ⠯
+  к: 0b000101, // dots [1,3]         ⠅
+  л: 0b000111, // dots [1,2,3]       ⠇
+  м: 0b001101, // dots [1,3,4]       ⠍
+  н: 0b011101, // dots [1,3,4,5]     ⠝
+  о: 0b010101, // dots [1,3,5]       ⠕
+  п: 0b001111, // dots [1,2,3,4]     ⠏
+  р: 0b010111, // dots [1,2,3,5]     ⠗
+  с: 0b001110, // dots [2,3,4]       ⠎
+  т: 0b011110, // dots [2,3,4,5]     ⠞
+  у: 0b100101, // dots [1,3,6]       ⠥
+  ф: 0b001011, // dots [1,2,4]       ⠋
+  х: 0b010011, // dots [1,2,5]       ⠓
+  ц: 0b001001, // dots [1,4]         ⠉
+  ч: 0b011111, // dots [1,2,3,4,5]   ⠟
+  ш: 0b110001, // dots [1,5,6]       ⠱
+  щ: 0b101101, // dots [1,3,4,6]     ⠭
+  ъ: 0b110111, // dots [1,2,3,5,6]   ⠷
+  ы: 0b101110, // dots [2,3,4,6]     ⠮
+  ь: 0b111110, // dots [2,3,4,5,6]   ⠾
+  э: 0b101010, // dots [2,4,6]       ⠪
+  ю: 0b110011, // dots [1,2,5,6]     ⠳
+  я: 0b101011, // dots [1,2,4,6]     ⠫
+  ё: 0b100001, // dots [1,6]         ⠡
   ' ': 0b000000, '.': 0b110010, ',': 0b000010, '!': 0b010110,
   '?': 0b100110, '-': 0b100000,
 }
@@ -114,6 +138,9 @@ export function buildSVG({
   showGuide,
   dotStroke = null, // optional: { color, width } — preview-only, not in exported SVG
 }) {
+  // Physical Braille standard proportions:
+  // horizontal dot spacing inside cell / cell width  ≈ 2.5 / 6.2 ≈ 0.40
+  // vertical dot spacing inside cell / cell height   ≈ 2.5 / 10  = 0.25
   const dotColGap = cellW * 0.4
   const dotRowGap = cellH * 0.25
   const lineHeight = cellH + lineSpacing
