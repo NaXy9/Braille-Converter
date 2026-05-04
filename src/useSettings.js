@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react'
 const DEFAULTS = {
   text:        'Hello World',
   dotRadius:   4,
-  cellW:       32,  // увеличено с 28 для лучшего визуального разделения ячеек
+  cellW:       32,
   cellH:       40,
   lineSpacing: 16,
   margin:      28,
@@ -13,6 +13,7 @@ const DEFAULTS = {
   showEmpty:   true,
   showGuide:   false,
   singleLine:  false,
+  grade2:      false,
 }
 
 export function useSettings() {

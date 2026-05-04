@@ -1,8 +1,4 @@
 // English Grade 1 Braille
-// Dot layout:  1 4
-//              2 5
-//              3 6
-// Bits: bit 0 = dot1, bit 1 = dot2, ... bit 5 = dot6
 export const EN_BRAILLE = {
   a: 0b000001, b: 0b000011, c: 0b001001, d: 0b011001,
   e: 0b010001, f: 0b001011, g: 0b011011, h: 0b010011,
@@ -19,61 +15,149 @@ export const EN_BRAILLE = {
   "'": 0b000100, '"': 0b000100, '/': 0b100100,
 }
 
-// Russian Braille — все символы проверены посимвольно по symbl.cc/ru/tools/braille/
-// используя pangram "Съешь ещё этих мягких французских булок, да выпей же чаю"
+// Russian Braille
 export const RU_BRAILLE = {
-  а: 0b000001, // dots [1]           ⠁
-  б: 0b000011, // dots [1,2]         ⠃
-  в: 0b111010, // dots [2,4,5,6]     ⠺
-  г: 0b011011, // dots [1,2,4,5]     ⠛
-  д: 0b011001, // dots [1,4,5]       ⠙
-  е: 0b010001, // dots [1,5]         ⠑
-  ж: 0b011010, // dots [2,4,5]       ⠚
-  з: 0b110101, // dots [1,3,5,6]     ⠵
-  и: 0b001010, // dots [2,4]         ⠊
-  й: 0b101111, // dots [1,2,3,4,6]   ⠯
-  к: 0b000101, // dots [1,3]         ⠅
-  л: 0b000111, // dots [1,2,3]       ⠇
-  м: 0b001101, // dots [1,3,4]       ⠍
-  н: 0b011101, // dots [1,3,4,5]     ⠝
-  о: 0b010101, // dots [1,3,5]       ⠕
-  п: 0b001111, // dots [1,2,3,4]     ⠏
-  р: 0b010111, // dots [1,2,3,5]     ⠗
-  с: 0b001110, // dots [2,3,4]       ⠎
-  т: 0b011110, // dots [2,3,4,5]     ⠞
-  у: 0b100101, // dots [1,3,6]       ⠥
-  ф: 0b001011, // dots [1,2,4]       ⠋
-  х: 0b010011, // dots [1,2,5]       ⠓
-  ц: 0b001001, // dots [1,4]         ⠉
-  ч: 0b011111, // dots [1,2,3,4,5]   ⠟
-  ш: 0b110001, // dots [1,5,6]       ⠱
-  щ: 0b101101, // dots [1,3,4,6]     ⠭
-  ъ: 0b110111, // dots [1,2,3,5,6]   ⠷
-  ы: 0b101110, // dots [2,3,4,6]     ⠮
-  ь: 0b111110, // dots [2,3,4,5,6]   ⠾
-  э: 0b101010, // dots [2,4,6]       ⠪
-  ю: 0b110011, // dots [1,2,5,6]     ⠳
-  я: 0b101011, // dots [1,2,4,6]     ⠫
-  ё: 0b100001, // dots [1,6]         ⠡
+  а: 0b000001,
+  б: 0b000011,
+  в: 0b111010,
+  г: 0b011011,
+  д: 0b011001,
+  е: 0b010001,
+  ж: 0b011010,
+  з: 0b110101,
+  и: 0b001010,
+  й: 0b101111,
+  к: 0b000101,
+  л: 0b000111,
+  м: 0b001101,
+  н: 0b011101,
+  о: 0b010101,
+  п: 0b001111,
+  р: 0b010111,
+  с: 0b001110,
+  т: 0b011110,
+  у: 0b100101,
+  ф: 0b001011,
+  х: 0b010011,
+  ц: 0b001001,
+  ч: 0b011111,
+  ш: 0b110001,
+  щ: 0b101101,
+  ъ: 0b110111,
+  ы: 0b101110,
+  ь: 0b111110,
+  э: 0b101010,
+  ю: 0b110011,
+  я: 0b101011,
+  ё: 0b100001,
   ' ': 0b000000, '.': 0b110010, ',': 0b000010, '!': 0b010110,
   '?': 0b100110, '-': 0b100000,
 }
 
-// Dot positions [col, row] within a cell (0-indexed)
+// Grade 2 (UEB) contractions
+const WORD_SIGNS = {
+  'but':       '\u2803',
+  'can':       '\u2809',
+  'do':        '\u2819',
+  'every':     '\u2811',
+  'from':      '\u280b',
+  'go':        '\u281b',
+  'have':      '\u2813',
+  'just':      '\u281a',
+  'knowledge': '\u2805',
+  'like':      '\u2807',
+  'more':      '\u280d',
+  'not':       '\u281d',
+  'people':    '\u280f',
+  'quite':     '\u281f',
+  'rather':    '\u2817',
+  'so':        '\u280e',
+  'that':      '\u281e',
+  'us':        '\u2815',
+  'very':      '\u2827',
+  'will':      '\u283a',
+  'it':        '\u280a',
+  'you':       '\u281d', // ⠽  — note: shares cell with 'not' sign; context = word sign
+  'as':        '\u2801',
+  'in':        '\u2814',
+}
+
+// Override 'you' — it uses y-sign
+WORD_SIGNS['you'] = '\u283d'
+
+const CONTRACTIONS = {
+  // Strong group signs
+  'and':  '\u282f',
+  'for':  '\u283f',
+  'of':   '\u2837',
+  'the':  '\u282e',
+  'with': '\u283e',
+  'ing':  '\u282c',
+  'his':  '\u2826',
+  'was':  '\u2834',
+  'ch':   '\u2821',
+  'gh':   '\u2823',
+  'sh':   '\u2829',
+  'th':   '\u2839',
+  'wh':   '\u2831',
+  'ed':   '\u282b',
+  'er':   '\u283b',
+  'ou':   '\u2833',
+  'ow':   '\u282a',
+  'st':   '\u280c',
+  'ar':   '\u281c',
+  'en':   '\u2822',
+  'bb':   '\u2806',
+  'cc':   '\u2816',
+  'dd':   '\u2836',
+  'ff':   '\u2806',
+  'gg':   '\u2836',
+}
+
+// Pre-sorted by pattern length descending for greedy matching
+const CONTRACTION_LIST = Object.entries(CONTRACTIONS).sort((a, b) => b[0].length - a[0].length)
+
+export function applyGrade2(text) {
+  const tokens = text.toLowerCase().split(/(\b[a-z]+\b)/)
+  return tokens.map((token) => {
+    if (!/^[a-z]+$/.test(token)) return token
+
+    if (WORD_SIGNS[token]) return WORD_SIGNS[token]
+
+    let word = token
+    let out = ''
+    while (word.length > 0) {
+      let matched = false
+      for (const [pat, br] of CONTRACTION_LIST) {
+        if (word.startsWith(pat)) {
+          out += br
+          word = word.slice(pat.length)
+          matched = true
+          break
+        }
+      }
+      if (!matched) {
+        out += word[0]
+        word = word.slice(1)
+      }
+    }
+    return out
+  }).join('')
+}
+
 export const DOT_POS = [
-  [0, 0], // dot 1
-  [0, 1], // dot 2
-  [0, 2], // dot 3
-  [1, 0], // dot 4
-  [1, 1], // dot 5
-  [1, 2], // dot 6
+  [0, 0],
+  [0, 1],
+  [0, 2],
+  [1, 0],
+  [1, 1],
+  [1, 2],
 ]
 
-/**
- * Convert a single character to its Braille bit pattern.
- * Language is auto-detected: Cyrillic → Russian Braille, else English.
- */
 export function charToBraille(ch) {
+  const cp = ch.codePointAt(0)
+  if (cp >= 0x2800 && cp <= 0x28ff) return cp - 0x2800
+
   const lower = ch.toLowerCase()
   const isCyrillic = /[а-яёА-ЯЁ]/.test(ch)
   let bits = isCyrillic ? RU_BRAILLE[lower] : EN_BRAILLE[lower]
@@ -81,10 +165,6 @@ export function charToBraille(ch) {
   return bits
 }
 
-/**
- * Wrap text into lines of at most `maxCols` cells.
- * Respects explicit newlines; wraps at word boundaries.
- */
 export function wrapText(text, maxCols, singleLine = false) {
   const inputLines = text.split('\n')
   const lines = []
@@ -121,10 +201,6 @@ export function wrapText(text, maxCols, singleLine = false) {
   return lines
 }
 
-/**
- * Build SVG markup string from the given settings.
- * Returns { svgMarkup, svgW, svgH, totalLines, cellCount }
- */
 export function buildSVG({
   lines,
   dotRadius,
@@ -136,11 +212,9 @@ export function buildSVG({
   colorEmpty,
   showEmpty,
   showGuide,
-  dotStroke = null, // optional: { color, width } — preview-only, not in exported SVG
+  dotStroke = null,
 }) {
-  // Physical Braille standard proportions:
-  // horizontal dot spacing inside cell / cell width  ≈ 2.5 / 6.2 ≈ 0.40
-  // vertical dot spacing inside cell / cell height   ≈ 2.5 / 10  = 0.25
+
   const dotColGap = cellW * 0.4
   const dotRowGap = cellH * 0.25
   const lineHeight = cellH + lineSpacing
@@ -171,7 +245,8 @@ export function buildSVG({
         const active = (bits >> d) & 1
 
         if (active) {
-          const strokeAttrs = dotStroke ? ` stroke="${dotStroke.color}" stroke-width="${dotStroke.width}"` : ""; dots += `<circle cx="${cx}" cy="${cy}" r="${dotRadius}" fill="${colorDot}"${strokeAttrs}/>`;
+          const strokeAttrs = dotStroke ? ` stroke="${dotStroke.color}" stroke-width="${dotStroke.width}"` : ''
+          dots += `<circle cx="${cx}" cy="${cy}" r="${dotRadius}" fill="${colorDot}"${strokeAttrs}/>`
           cellCount++
         } else if (showEmpty) {
           dots += `<circle cx="${cx}" cy="${cy}" r="${(dotRadius * 0.55).toFixed(2)}" fill="${colorEmpty}"/>`

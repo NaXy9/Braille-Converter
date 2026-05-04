@@ -25,6 +25,8 @@ function CopyIcon() {
 export default function ControlsPanel({ settings, set, onExport, onCopy, mobileTab, t, th }) {
   const [copyLabel, setCopyLabel] = useState(null)
 
+  const isEmpty = !settings.text.trim()
+
   const handleCopy = async () => {
     await onCopy()
     setCopyLabel(t.copied)
@@ -40,12 +42,13 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
     fontWeight: 700,
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
-    cursor: 'pointer',
+    cursor: isEmpty ? 'not-allowed' : 'pointer',
     transition: 'all 0.18s',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     gap: '10px',
+    opacity: isEmpty ? 0.35 : 1,
   }
 
   const inputStyle = {
@@ -143,6 +146,24 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
             {label}
           </label>
         ))}
+
+        {/* Grade 2 — with hint */}
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 12, cursor: 'pointer', userSelect: 'none', marginTop: 8, color: th.text }}>
+          <input
+            type="checkbox"
+            checked={settings.grade2}
+            onChange={(e) => set('grade2', e.target.checked)}
+            style={{ width: 16, height: 16, accentColor: th.accent, cursor: 'pointer', flexShrink: 0, marginTop: 1 }}
+          />
+          <span>
+            {t.grade2}
+            {settings.grade2 && (
+              <span style={{ display: 'block', fontSize: 10, color: th.textMute, marginTop: 3, lineHeight: 1.4 }}>
+                {t.grade2Hint}
+              </span>
+            )}
+          </span>
+        </label>
       </div>
 
       {/* EXPORT */}
@@ -150,20 +171,38 @@ export default function ControlsPanel({ settings, set, onExport, onCopy, mobileT
         <SectionLabel th={th}>{t.sectionExport}</SectionLabel>
 
         <button
-          onClick={onExport}
+          onClick={isEmpty ? undefined : onExport}
+          disabled={isEmpty}
           style={{ ...btnBase, background: th.text, color: th.btnText }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = th.accent; e.currentTarget.style.transform = 'translateY(-1px)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = th.text; e.currentTarget.style.transform = 'translateY(0)' }}
-          onMouseDown={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+          onMouseEnter={(e) => {
+            if (!isEmpty) {
+              e.currentTarget.style.background = th.accent
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = th.text
+            e.currentTarget.style.transform = 'translateY(0)'
+          }}
+          onMouseDown={(e) => { if (!isEmpty) e.currentTarget.style.transform = 'translateY(0)' }}
         >
           <DownloadIcon /> {t.downloadSVG}
         </button>
 
         <button
-          onClick={handleCopy}
+          onClick={isEmpty ? undefined : handleCopy}
+          disabled={isEmpty}
           style={{ ...btnBase, background: 'none', color: th.text, border: `1.5px solid ${th.text}` }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = th.bg2; e.currentTarget.style.transform = 'translateY(-1px)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; e.currentTarget.style.transform = 'translateY(0)' }}
+          onMouseEnter={(e) => {
+            if (!isEmpty) {
+              e.currentTarget.style.background = th.bg2
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'none'
+            e.currentTarget.style.transform = 'translateY(0)'
+          }}
         >
           <CopyIcon /> {copyLabel ?? t.copySVG}
         </button>

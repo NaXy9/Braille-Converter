@@ -1,5 +1,5 @@
 import { useRef, useState, useMemo } from 'react'
-import { wrapText, buildSVG } from '../braille'
+import { wrapText, buildSVG, applyGrade2 } from '../braille'
 
 export default function PreviewPanel({ settings, mobileTab, t, th }) {
   const [zoom, setZoom] = useState(1)
@@ -8,7 +8,9 @@ export default function PreviewPanel({ settings, mobileTab, t, th }) {
   const { svgMarkup, svgW, svgH, totalLines, cellCount, charCount } = useMemo(() => {
     const text = settings.text
     if (!text.trim()) return { svgMarkup: null, svgW: 0, svgH: 0, totalLines: 0, cellCount: 0, charCount: 0 }
-    const lines = wrapText(text, settings.maxCols, settings.singleLine)
+
+    const processedText = settings.grade2 ? applyGrade2(text) : text
+    const lines = wrapText(processedText, settings.maxCols, settings.singleLine)
     const isDark = th?.bg === '#141414'
     const result = buildSVG({
       lines,
